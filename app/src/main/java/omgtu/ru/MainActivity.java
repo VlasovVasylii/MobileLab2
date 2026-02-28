@@ -1,5 +1,6 @@
 package omgtu.ru;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -9,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnMainFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +31,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     }
 
     @Override
-    public void onFirstButtonClick() {
-        Toast.makeText(this, "First Button Clicked!", Toast.LENGTH_SHORT).show();
+    public void onOpenCatalog() {
+        // Бизнес-логика: открываем каталог в новой активити
+        Intent intent = new Intent(this, CatalogActivity.class);
+        startActivity(intent);
     }
 
     @Override
-    public void onSecondButtonClick() {
-        Toast.makeText(this, "Second Button Clicked!", Toast.LENGTH_SHORT).show();
+    public void onOpenProfile() {
+        Toast.makeText(this, "Profile opened", Toast.LENGTH_SHORT).show();
     }
 }
