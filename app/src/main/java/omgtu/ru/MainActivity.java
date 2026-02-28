@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnMainFragmentInteractionListener {
+import org.greenrobot.eventbus.Subscribe;
+
+public class MainActivity extends BaseActivity implements MainFragment.OnMainFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,23 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
 
     @Override
     public void onOpenCatalog() {
-        // Бизнес-логика: открываем каталог в новой активити
         Intent intent = new Intent(this, CatalogActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onOpenProfile() {
-        Toast.makeText(this, "Profile opened", Toast.LENGTH_SHORT).show();
+        // Открываем ParentFragment, который содержит ChildFragmentManager
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new ParentFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Subscribe
+    public void onShowDetails(Events.ShowDetailsEvent event) {
+        Toast.makeText(this, event.message, Toast.LENGTH_LONG).show();
+        // После успешной настройки возвращаемся на главный экран
+        getSupportFragmentManager().popBackStack();
     }
 }
